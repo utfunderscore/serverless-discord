@@ -1,0 +1,20 @@
+meta {
+  name: test signature verification success
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:9000/
+  body: json
+  auth: inherit
+}
+
+headers {
+  X-Signature-Ed25519: 145ea137dcb8fcb123a0082cad36969ff17e46f1f8ff70745c575db98e9210f1180f07a261f91301ad5c9130a307f92fe85c08cdd94d0a8533fc6bf437ba0d09
+  X-Signature-Timestamp: 1746297636
+}
+
+body:json {
+  {"app_permissions":"562949953601536","application_id":"1096551423958855810","attachment_size_limit":524288000,"authorizing_integration_owners":{},"entitlements":[],"id":"1368296194388000911","token":"aW50ZXJhY3Rpb246MTM2ODI5NjE5NDM4ODAwMDkxMTo2bnhTNkt5dldkd01qQU9OVUVLYmdjdkFIb2g3enRIYVozUnZ3b2pDWGVsRXZiYmhXaVRTR0tVbGJ6ZkR4M1Rzc25INVBxSDlwUHJNa2JUaUpiZDRCTTBUeTFFZmJjWXpkWUs5TW9YczBQbW51aThsYXhKVnM1Uk9rRkFVVzZDdA","type":1,"user":{"avatar":"c6a249645d46209f337279cd2ca998c7","avatar_decoration_data":null,"bot":true,"clan":null,"collectibles":null,"discriminator":"0000","global_name":"Discord","id":"643945264868098049","primary_guild":null,"public_flags":1,"system":true,"username":"discord"},"version":1}
+}

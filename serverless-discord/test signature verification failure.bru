@@ -1,0 +1,44 @@
+meta {
+  name: test signature verification failure
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:9000/
+  body: json
+  auth: inherit
+}
+
+headers {
+  X-Signature-Ed25519: 79527893f485f0de52193bd927e731844a7c2117effd78dd9c8b2374c04790cf6d4007f60b737d5e264c05be642d05f673a51f15fba3ca09845a2a416f39fe0a
+  X-Signature-Timestamp: 1747090613
+}
+
+body:json {
+  {
+    "app_permissions": "562949953601536",
+    "application_id": "1096551423958855810",
+    "attachment_size_limit": 524288000,
+    "authorizing_integration_owners": {},
+    "entitlements": [],
+    "id": "1371622186951114924",
+    "token": "aW50ZXJhY3Rpb246MTM3MTYyMjE4Njk1MTExNDkyNDo4YXJIT0U1VTRRVHVjREg1WUY4ckhZQ3RKWUNQdVc0dkI2dFUzaHNWcjVDYmxUSFJrQ25lTDBLTWQxaXBFeUdFYklOQnlPcEUzRDVQb3Juem5yVkQ1UEZsQ3dBRFVIeW10MGpuQXd5Z0VzTjdsOXk4SHVHSVdJVFRVb1hwT3ZjMQ",
+    "type": 1,
+    "user": {
+      "avatar": "c6a249645d46209f337279cd2ca998c7",
+      "avatar_decoration_data": null,
+      "bot": true,
+      "clan": null,
+      "collectibles": null,
+      "discriminator": "0000",
+      "global_name": "Discord",
+      "id": "643945264868098049",
+      "primary_guild": null,
+      "public_flags": 1,
+      "system": true,
+      "username": "discord"
+    },
+    "version": 1
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "serverless-discord",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
