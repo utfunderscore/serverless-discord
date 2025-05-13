@@ -57,14 +57,12 @@ async fn main() -> Result<(), Error> {
     tracing::init_default_subscriber();
 
     env_logger::init();
-    // set logging level
-    log::set_max_level(log::LevelFilter::Info);
     
     let app = Router::new()
         .route("/", post(routes::ping_handler))
         .route_layer(axum::middleware::from_fn(mw_sample))
         .with_state(App::new(
-            "",
+            "9631c9818b210a39d97bb1bab60ff966c566d56066075bca2ae608a6569e427b",
         ));
 
     run(app).await
