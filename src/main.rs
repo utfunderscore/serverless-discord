@@ -1,24 +1,11 @@
 mod routes;
 mod security;
+mod model;
 
 use axum::routing::post;
 use axum::Router;
-use lambda_http::request::RequestContext::ApiGatewayV1;
 use lambda_http::{run, tracing, Error};
 use serde::{Deserialize, Serialize};
-
-async fn mw_sample(
-    req: axum::extract::Request,
-    next: axum::middleware::Next,
-) -> impl axum::response::IntoResponse {
-    let context = req
-        .extensions()
-        .get::<lambda_http::request::RequestContext>();
-    if let Some(ApiGatewayV1(ctx)) = context {
-        tracing::info!("RequestId = {:?}", ctx.request_id);
-    }
-    next.run(req).await
-}
 
 #[derive(Serialize)]
 struct ApiError {
@@ -60,9 +47,9 @@ async fn main() -> Result<(), Error> {
     
     let app = Router::new()
         .route("/", post(routes::ping_handler))
-        .route_layer(axum::middleware::from_fn(mw_sample))
+        .route_layer(axum::middleware::from_fn(routes::mw_sample))
         .with_state(App::new(
-            "9631c9818b210a39d97bb1bab60ff966c566d56066075bca2ae608a6569e427b",
+            "",
         ));
 
     run(app).await

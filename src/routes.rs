@@ -5,7 +5,23 @@ use axum::http::{header, HeaderMap};
 use axum::response::Response;
 use axum::debug_handler;
 use std::str::from_utf8;
-use log::{debug, error, info, trace, warn};
+use lambda_http::request::RequestContext::ApiGatewayV1;
+use lambda_http::tracing;
+use crate::model::interactions::{FullInteraction, Interaction};
+
+pub async fn mw_sample(
+    req: axum::extract::Request,
+    next: axum::middleware::Next,
+) -> impl axum::response::IntoResponse {
+    let context = req
+        .extensions()
+        .get::<lambda_http::request::RequestContext>();
+    if let Some(ApiGatewayV1(ctx)) = context {
+        tracing::info!("RequestId = {:?}", ctx.request_id);
+    }
+    next.run(req).await
+}
+
 
 fn error_response(message: &str, code: u16) -> Response {
     let error = ApiError::new(message);
@@ -36,8 +52,14 @@ pub async fn ping_handler(
         return Err(error_response("Invalid request", 401))
     }
 
-    let json_value = serde_json::from_slice::<serde_json::Value>(&body_bytes)
-        .map_err(|_| error_response("Failed to parse JSON", 400))?;
+    let json_value_result = serde_json::from_slice::<Interaction>(&body_bytes);
+    if let Err(e) = json_value_result {
+        eprintln!("Failed to parse json: {}", e);
+        return Err(error_response("Invalid request", 400))
+    }
+    
+    let interaction = json_value_result.unwrap();
+    println!("Received interaction: {:#?}", interaction);
 
     Ok(
         Response::builder()
@@ -56,7 +78,9 @@ fn validate_request(headers: &HeaderMap, body_bytes: &Bytes, public_key: String)
     let timestamp = headers
         .get("x-signature-timestamp")
         .ok_or("Invalid timestamp")?;
-    
+
+
+
     let key = public_key.as_str();
 
     let body_str = from_utf8(body_bytes.as_ref()).map_err(|_| "Failed to convert body to string")?;

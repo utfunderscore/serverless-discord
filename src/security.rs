@@ -49,6 +49,7 @@ pub fn verify_discord_request(
         .map_err(|_| String::from("Request body does not match signature"))
 }
 
+#[allow(dead_code)]
 pub fn generate_signature(signing_key: &SigningKey, body: &str, timestamp: &str) -> Signature {
     let message = [timestamp.as_bytes(), body.as_bytes()].concat();
     signing_key.sign(message.as_slice())
@@ -56,7 +57,6 @@ pub fn generate_signature(signing_key: &SigningKey, body: &str, timestamp: &str)
 
 #[cfg(test)]
 mod tests {
-    use ed25519_dalek::ed25519::signature::Keypair;
     use ed25519_dalek::SigningKey;
     use rand::rngs::OsRng;
     use crate::security::generate_signature;
